@@ -12,33 +12,40 @@ var SentenceHandler = {
 
   nSentence: 0,
   nCorrect: 0,
+  currentSentence
 
   createSentenceBlock: function(){
-    var tmpl = $("#template").clone();
+    this.currentSentence = $("#template").clone();
 
-    tmpl.css("display", "");
-    tmpl.children().html(data[this.nSentence].phrase_en);
+    this.currentSentence.css("display", "");
+    this.currentSentence.children().html(data[this.nSentence].phrase_en);
 
-    $(".sentences").append(tmpl);
+    $(".sentences").append(this.currentSentence);
 
     this.nSentence ++;
  },
 
  verifySentence: function(){
+   if($("#solutionBar").val() == data[this.nSentence]){
+     alert("corretta");
+     this.nSentence++;
+     this.nCorrect++;
 
-   console.log($("#solutionBar").val());
+     this.currentSentence.remove();
+     this.createSentenceBlock();
+   }
  },
 
  sentenceCounter: function(){
-   var tmpl = '<div class="finalTemplate"> '
-     '<h3> You have solved <span id="tot-good">XXX</span> of <span id="tot">YYY</span></h3>'
+   var tmpl = '<div class="finalTemplate"> ' +
+     '<h3> You have solved <span id="tot-good">XXX</span> of <span id="tot">YYY</span></h3>' +
   ' </div>';
 
-  tmpl.replace("YYY", data.size);
-  tmpl.replace("XXX", nCorrect);
+  tmpl = tmpl.replace("YYY", data.length);
+  tmpl = tmpl.replace("XXX", this.nCorrect);
 
   $(".scores").append(tmpl);
- }
+},
 
 }
 
